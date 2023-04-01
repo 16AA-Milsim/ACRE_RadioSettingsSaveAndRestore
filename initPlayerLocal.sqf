@@ -49,7 +49,7 @@ _confirmAction = ["Confirm_Save_Radio_Settings", "<t color='#ffa4a4'>Confirm</t>
 
 
 
-// Delete Radio Settings action
+// Delete Radio Settings action 
 _deleteRadioSettingsStatement = {
 profileNamespace setVariable ["radios_base", nil];
 profileNamespace setVariable ["radios_channel", nil];

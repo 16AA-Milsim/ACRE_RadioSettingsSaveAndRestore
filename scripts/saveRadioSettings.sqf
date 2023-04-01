@@ -4,9 +4,20 @@ _channels = [];
 _volumes = [];
 _spatials = [];
 _pttAssignments = [];
-_pttAssignment1 = [];
-_pttAssignment2 = [];
-_pttAssignment3 = [];
+_pttTemp = [];
+_pttSettings = [];
+_pttAssignment1 = "";
+_pttAssignment2 = "";
+_pttAssignment3 = "";
+_channel1 = "";
+_channel2 = "";
+_channel3 = "";
+_volume1 = "";
+_volume2 = "";
+_volume3 = "";
+_spatial1 = "";
+_spatial2 = "";
+_spatial3 = "";
 
 // Get the current radio list
 _radios = [] call acre_api_fnc_getCurrentRadioList;
@@ -14,21 +25,42 @@ _radios = [] call acre_api_fnc_getCurrentRadioList;
 // Get the current PTT key and save the Base Radio Type for each PTT.
 _pttAssignment = call acre_api_fnc_getMultiPushToTalkAssignment;
 
-// Check if pttAssignment array has at least one element
+// Check if pttAssignment array has at least one element to prevent potential Zero Divisor error
 if (count _pttAssignment > 0) then {
-    // Get base radio for first element of pttAssignment array
+    // Get base radio and settings for radio set to PTT1
     _pttAssignment1 = [_pttAssignment select 0] call acre_api_fnc_getBaseRadio;
+    _channel1 = [_pttAssignment select 0] call acre_api_fnc_getRadioChannel;
+    _volume1 = [_pttAssignment select 0] call acre_api_fnc_getRadioVolume;
+    _spatial1 = [_pttAssignment select 0] call acre_api_fnc_getRadioSpatial;
+    profileNamespace setVariable ["pttAssignment_1", _pttAssignment1];
+    profileNamespace setVariable ["channel_1", _channel1];
+    profileNamespace setVariable ["volume_1", _volume1];
+    profileNamespace setVariable ["spatial_1", _spatial1];
 
     // Check if pttAssignment array has at least two elements
     if (count _pttAssignment > 1) then {
-        // Get base radio for second element of pttAssignment array
+        // Get base radio and settings for radio set to PTT2
         _pttAssignment2 = [_pttAssignment select 1] call acre_api_fnc_getBaseRadio;
+        _channel2 = [_pttAssignment select 1] call acre_api_fnc_getRadioChannel;
+        _volume2 = [_pttAssignment select 1] call acre_api_fnc_getRadioVolume;
+        _spatial2 = [_pttAssignment select 1] call acre_api_fnc_getRadioSpatial;
+        profileNamespace setVariable ["pttAssignment_2", _pttAssignment2];
+        profileNamespace setVariable ["channel_2", _channel2];
+        profileNamespace setVariable ["volume_2", _volume2];
+        profileNamespace setVariable ["spatial_2", _spatial2];
     };
 
     // Check if pttAssignment array has at least three elements
     if (count _pttAssignment > 2) then {
-        // Get base radio for third element of pttAssignment array
+        // Get base radio and settings for radio set to PTT3
         _pttAssignment3 = [_pttAssignment select 2] call acre_api_fnc_getBaseRadio;
+        _channel3 = [_pttAssignment select 2] call acre_api_fnc_getRadioChannel;
+        _volume3 = [_pttAssignment select 2] call acre_api_fnc_getRadioVolume;
+        _spatial3 = [_pttAssignment select 2] call acre_api_fnc_getRadioSpatial;
+        profileNamespace setVariable ["pttAssignment_3", _pttAssignment3];
+        profileNamespace setVariable ["channel_3", _channel3];
+        profileNamespace setVariable ["volume_3", _volume3];
+        profileNamespace setVariable ["spatial_3", _spatial3];
     };
 };
 
@@ -68,9 +100,13 @@ profileNamespace setVariable ["radios_base", _baseRadios];
 profileNamespace setVariable ["radios_channel", _channels];
 profileNamespace setVariable ["radios_volume", _volumes];
 profileNamespace setVariable ["radios_spatial", _spatials];
-profileNamespace setVariable ["ptt_assignment", _pttAssignment];
 
 // Display the hint in-game
-hint "Radio Settings Saved";
-sleep 5;
-hintsilent "";
+// hint "Radio Settings Saved";
+
+// Combine the elements of the _pttSettings array into a single string
+_pttSettingsStr = format ["PTT Settings:\n\n%1 %2 %3 %4\n%5 %6 %7 %8\n%9 %10 %11 %12", _pttAssignment1, _channel1, _volume1, _spatial1, _pttAssignment2, _channel2, _volume2, _spatial2, _pttAssignment3, _channel3, _volume3, _spatial3];
+
+// Display the hint with the PTT Settings
+hint format ["Radio Settings Saved\n\n%1", _pttSettingsStr];
+

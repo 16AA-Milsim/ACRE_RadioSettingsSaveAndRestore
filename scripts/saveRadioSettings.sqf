@@ -1,12 +1,41 @@
-// Get the current radio list
-_radios = [] call acre_api_fnc_getCurrentRadioList;
-
-// Loop through each radio in the list and extract its base type, channel, volume, spatial setting, and Push To Talk assignment
+// Define Arrays
 _baseRadios = [];
 _channels = [];
 _volumes = [];
 _spatials = [];
 _pttAssignments = [];
+_pttAssignment1 = [];
+_pttAssignment2 = [];
+_pttAssignment3 = [];
+
+// Get the current radio list
+_radios = [] call acre_api_fnc_getCurrentRadioList;
+
+// Get the current PTT key and save the Base Radio Type for each PTT.
+_pttAssignment = call acre_api_fnc_getMultiPushToTalkAssignment;
+
+// Check if pttAssignment array has at least one element
+if (count _pttAssignment > 0) then {
+    // Get base radio for first element of pttAssignment array
+    _pttAssignment1 = [_pttAssignment select 0] call acre_api_fnc_getBaseRadio;
+
+    // Check if pttAssignment array has at least two elements
+    if (count _pttAssignment > 1) then {
+        // Get base radio for second element of pttAssignment array
+        _pttAssignment2 = [_pttAssignment select 1] call acre_api_fnc_getBaseRadio;
+    };
+
+    // Check if pttAssignment array has at least three elements
+    if (count _pttAssignment > 2) then {
+        // Get base radio for third element of pttAssignment array
+        _pttAssignment3 = [_pttAssignment select 2] call acre_api_fnc_getBaseRadio;
+    };
+};
+_pttAssignment =  [_pttAssignment1, _pttAssignment2, _pttAssignment3];
+_hintString = format ["%1", _pttAssignment];
+hint _hintString;
+
+// Loop through each radio in the list and extract its base type, channel, volume and spatial setting
 {
     // Check if we have looped through more than 6 radios
     if (_forEachIndex >= 6) exitWith {};
@@ -36,9 +65,6 @@ _pttAssignments = [];
     _spatials pushBack _spatial;
     
 } forEach _radios;
-
-// Get the current PTT key for all the radios
-_pttAssignment = call acre_api_fnc_getMultiPushToTalkAssignment;
 
 // Add the variables/arrays to the profileNamespace
 profileNamespace setVariable ["radios_base", _baseRadios];

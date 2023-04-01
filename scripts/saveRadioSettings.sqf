@@ -31,9 +31,6 @@ if (count _pttAssignment > 0) then {
         _pttAssignment3 = [_pttAssignment select 2] call acre_api_fnc_getBaseRadio;
     };
 };
-_pttAssignment =  [_pttAssignment1, _pttAssignment2, _pttAssignment3];
-_hintString = format ["%1", _pttAssignment];
-hint _hintString;
 
 // Loop through each radio in the list and extract its base type, channel, volume and spatial setting
 {

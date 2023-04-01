@@ -10,33 +10,77 @@ _pttAssignment = profileNamespace getVariable ["ptt_assignment", []];
 // Get the current radio list
 _radios = [] call acre_api_fnc_getCurrentRadioList;
 
-// Loop through the radios and set their settings
-{
-    // Check if we have looped through more than 6 radios
-    if (_forEachIndex >= 6) exitWith {};
+// Check if the player is carrying any radios
+if (count _radios == 0) then {
+    hint "You are not carrying any radios";
+} else {
+    // Create copies of the saved arrays to work with
+    _baseRadiosCopy = +_baseRadios;
+    _channelsCopy = +_channels;
+    _volumesCopy = +_volumes;
+    _spatialsCopy = +_spatials;
 
-    // Set the base radio type for the radio ID
-    [_x, _baseRadios select _forEachIndex] call acre_api_fnc_setBaseRadio;
+    // Check if any radios have matching base types
+    _foundMatchingRadios = false;
 
-    // Set the channel for the radio
-    [_x, _channels select _forEachIndex] call acre_api_fnc_setRadioChannel;
+    // Loop through the radios and set their settings
+    {
+        // Check if we have looped through more than 6 radios
+        if (_forEachIndex >= 6) exitWith {};
 
-    // Set the volume for the radio
-    [_x, _volumes select _forEachIndex] call acre_api_fnc_setRadioVolume;
+        // Extract the base radio type from the radio ID
+        _currentBaseRadio = [_x] call acre_api_fnc_getBaseRadio;
 
-    // Set the spatial setting for the radio
-    [_x, _spatials select _forEachIndex] call acre_api_fnc_setRadioSpatial;
+        // Check if the current base radio type is in the saved baseRadios array
+        _index = _baseRadiosCopy find _currentBaseRadio;
+        if (_index != -1) then {
 
-} forEach _radios;
+            // Set the channel for the radio
+            [_x, _channelsCopy select _index] call acre_api_fnc_setRadioChannel;
 
-// Set the PTT assignment
-{
-    // Check if the PTT index is less than the count of _pttAssignment
-    if (_forEachIndex < count _pttAssignment) then {
-        // Set the PTT assignment
-        [_forEachIndex, _x] call acre_api_fnc_setMultiPushToTalkAssignment;
+            // Set the volume for the radio
+            [_x, _volumesCopy select _index] call acre_api_fnc_setRadioVolume;
+
+            // Set the spatial setting for the radio
+            [_x, _spatialsCopy select _index] call acre_api_fnc_setRadioSpatial;
+
+            // Remove the used base radio type and its associated settings from the copied arrays
+            _baseRadiosCopy deleteAt _index;
+            _channelsCopy deleteAt _index;
+            _volumesCopy deleteAt _index;
+            _spatialsCopy deleteAt _index;
+
+            // Set flag to indicate matching radio was found
+            _foundMatchingRadios = true;
+        };
+    } forEach _radios;
+
+    if (_foundMatchingRadios) then {
+        // Restore the PTT assignment
+        _pttTemp = [];
+
+        {
+            // Get the base radio for the current PTT assignment
+            _currentBaseRadio = [_x] call acre_api_fnc_getBaseRadio;
+
+            // Check if the current base radio type is in the saved pttAssignment array
+            _index = _pttAssignment find _currentBaseRadio;
+            if (_index != -1) then {
+                _pttTemp pushBack _x;
+            };
+        } forEach _pttAssignment;
+
+        // Set the restored PTT assignment
+        [_pttTemp] call acre_api_fnc_setMultiPushToTalkAssignment;
+
+        // Check if all base radios were matched
+        if (count _baseRadiosCopy == 0) then {
+            hint "Radio Settings Restored";
+        } else {
+            hint "Not all radio settings could be restored due to missing radios in your inventory";
+        };
+    } else {
+        // Display failure message
+        hint "No matching radios found";
     };
-} forEach _pttAssignment;
-
-// Display the hint in-game
-hint "Radio Settings Loaded";
+};

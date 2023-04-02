@@ -5,7 +5,6 @@ _baseRadios = profileNamespace getVariable ["radios_base", []];
 _channels = profileNamespace getVariable ["radios_channel", []];
 _volumes = profileNamespace getVariable ["radios_volume", []];
 _spatials = profileNamespace getVariable ["radios_spatial", []];
-_pttAssignment = profileNamespace getVariable ["ptt_assignment", []];
 
 // Get the current radio list
 _radios = [] call acre_api_fnc_getCurrentRadioList;
@@ -14,6 +13,45 @@ _radios = [] call acre_api_fnc_getCurrentRadioList;
 if (count _radios == 0) then {
     hint "You are not carrying any radios";
 } else {
+    // Reorder the elements in the _radios array
+    _sortedRadios = [];
+    _processedRadios = [];
+    {
+        _baseType = _x;
+        {
+            _currentBaseRadio = [_x] call acre_api_fnc_getBaseRadio;
+
+            if (_currentBaseRadio isEqualTo _baseType && !(_x in _processedRadios)) then {
+                _sortedRadios pushBack _x;
+                _processedRadios pushBack _x;
+                break;
+            };
+        } forEach _radios;
+    } forEach _baseRadios;
+
+    // Add any remaining radios not in the _baseRadios list
+    _radios = _sortedRadios + (_radios - _processedRadios);
+
+// Set the restored PTT assignment
+_radiosCount = count _radios;
+if (_radiosCount >= 3) then {
+    _ptt1 = _radios select 0;
+    _ptt2 = _radios select 1;
+    _ptt3 = _radios select 2;
+    _success = [ [_ptt1, _ptt2, _ptt3] ] call acre_api_fnc_setMultiPushToTalkAssignment;
+} else {
+    if (_radiosCount == 2) then {
+        _ptt1 = _radios select 0;
+        _ptt2 = _radios select 1;
+        _success = [ [_ptt1, _ptt2] ] call acre_api_fnc_setMultiPushToTalkAssignment;
+    } else {
+        if (_radiosCount == 1) then {
+            _ptt1 = _radios select 0;
+            _success = [ [_ptt1] ] call acre_api_fnc_setMultiPushToTalkAssignment;
+        };
+    };
+};
+
     // Create copies of the saved arrays to work with
     _baseRadiosCopy = +_baseRadios;
     _channelsCopy = +_channels;
@@ -56,31 +94,15 @@ if (count _radios == 0) then {
     } forEach _radios;
 
     if (_foundMatchingRadios) then {
-        // Restore the PTT assignment
-        _pttTemp = [];
-
-        {
-            // Get the base radio for the current PTT assignment
-            _currentBaseRadio = [_x] call acre_api_fnc_getBaseRadio;
-
-            // Check if the current base radio type is in the saved pttAssignment array
-            _index = _pttAssignment find _currentBaseRadio;
-            if (_index != -1) then {
-                _pttTemp pushBack _x;
-            };
-        } forEach _pttAssignment;
-
-        // Set the restored PTT assignment
-        [_pttTemp] call acre_api_fnc_setMultiPushToTalkAssignment;
 
         // Check if all base radios were matched
         if (count _baseRadiosCopy == 0) then {
             hint "Radio Settings Restored";
         } else {
-            hint "Not all radio settings could be restored due to missing radios in your inventory";
+            hint "Radio settings could only be partially restored due to missing radios in your inventory";
         };
     } else {
         // Display failure message
-        hint "No matching radios found";
+        hint "No matching radio types found";
     };
 };

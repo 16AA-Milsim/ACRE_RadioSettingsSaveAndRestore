@@ -38,16 +38,3 @@ _confirmStatement = {
 };
 _confirmAction = ["Confirm_Save_Radio_Settings", "<t color='#ffa4a4'>Confirm</t>", "", _confirmStatement, {true}] call ace_interact_menu_fnc_createAction;
 [(typeOf _unit), 1, ["ACE_SelfActions", "ACRE_Interact", "Settings_Branch", "Save_Radio_Settings_Branch"], _confirmAction] call ace_interact_menu_fnc_addActionToClass;
-
-
-
-// Delete Radio Settings action 
-_deleteRadioSettingsStatement = {
-profileNamespace setVariable ["radios_base", nil];
-profileNamespace setVariable ["radios_channel", nil];
-profileNamespace setVariable ["radios_volume", nil];
-profileNamespace setVariable ["radios_spatial", nil];
-profileNamespace setVariable ["ptt_assignment", nil];
-};
-_deleteRadioSettingsAction = ["Delete_Radio_Settings", "<t color='#ff4a4a'>Delete Settings</t>", "", _deleteRadioSettingsStatement, {true}] call ace_interact_menu_fnc_createAction;
-[(typeOf _unit), 1, ["ACE_SelfActions", "ACRE_Interact", "Settings_Branch"], _deleteRadioSettingsAction] call ace_interact_menu_fnc_addActionToClass;

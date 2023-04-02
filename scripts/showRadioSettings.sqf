@@ -16,7 +16,7 @@ if (_baseRadios isEqualTo []) then {
         _baseRadio = (_baseRadios select _index) splitString "_" joinString " " select [4];
         _pttText = "";
         if (_index < 3) then {
-            _pttText = format [" (PTT %1)", _index + 1];
+            _pttText = format [" - PTT %1", _index + 1];
         };
         _spatial = _spatials select _index;
         _spatialText = switch (_spatial) do {
@@ -25,7 +25,7 @@ if (_baseRadios isEqualTo []) then {
             case "CENTER": {"Both Ears"};
         };
         _volumeText = format ["%1", str round((_volumes select _index) * 100)];
-        _hintString = _hintString + format ["\nRadio %1%2:\n%3\nChannel %4\nVolume: %5%6\n%7\n", _index + 1, _pttText, _baseRadio, _channels select _index, _volumeText, "%", _spatialText];
+        _hintString = _hintString + format ["\nRadio %1%2:\n%3 - Channel %4\nVolume: %5%6 - %7\n", _index + 1, _pttText, _baseRadio, _channels select _index, _volumeText, "%", _spatialText];
     } forEach _baseRadios;
 
     hint _hintString;

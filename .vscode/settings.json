@@ -1,0 +1,26 @@
+{
+    "sqf.enableCBA": true,
+    "sqf.enableACE3": true,
+    "sqflint.ignoredVariables": [
+        "ace_interact_menu_fnc_createAction",
+        "ace_interact_menu_fnc_addActionToObject",
+        "acre_api_fnc_setPresetChannelField",
+        "acre_api_fnc_getCurrentRadioList",
+        "acre_api_fnc_getBaseRadio",
+        "acre_api_fnc_setMultiPushToTalkAssignment",
+        "acre_api_fnc_setRadioChannel",
+        "acre_api_fnc_setRadioVolume",
+        "acre_api_fnc_setRadioSpatial",
+        "acre_api_fnc_getCurrentRadioList",
+        "acre_api_fnc_getMultiPushToTalkAssignment",
+        "acre_api_fnc_getBaseRadio",
+        "acre_api_fnc_getRadioChannel",
+        "acre_api_fnc_getRadioVolume",
+        "acre_api_fnc_getRadioSpatial"
+    ],
+    "sqflint.exclude": [
+        "KPCF/**/*",
+        "taw_vd/**/*"
+    ],
+    "sqflint.contextSeparation": false,	
+}

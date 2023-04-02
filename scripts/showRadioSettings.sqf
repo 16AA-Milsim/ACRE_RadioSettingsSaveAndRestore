@@ -1,8 +1,8 @@
 // Get the profileNamespace Radio Settings variables
-_baseRadios = profileNamespace getVariable ["radios_base", []];
-_channels = profileNamespace getVariable ["radios_channel", []];
-_volumes = profileNamespace getVariable ["radios_volume", []];
-_spatials = profileNamespace getVariable ["radios_spatial", []];
+private _baseRadios = profileNamespace getVariable ["radios_base", []];
+private _channels = profileNamespace getVariable ["radios_channel", []];
+private _volumes = profileNamespace getVariable ["radios_volume", []];
+private _spatials = profileNamespace getVariable ["radios_spatial", []];
 
 // Check if previous settings exist
 if (_baseRadios isEqualTo []) then {
@@ -10,7 +10,7 @@ if (_baseRadios isEqualTo []) then {
     hint "There are no saved settings";
 } else {
     // Create a formatted string with the radio information and the Push To Talk assignment and Display as hint
-    _hintString = "SAVED RADIO SETTINGS\n";
+    private _hintString = "SAVED RADIO SETTINGS\n";
     {
         _index = _forEachIndex;
         _baseRadio = (_baseRadios select _index) splitString "_" joinString " " select [4];

@@ -1,18 +1,18 @@
 // Get saved variables/arrays from profileNamespace
-_baseRadios = profileNamespace getVariable ["radios_base", []];
-_channels = profileNamespace getVariable ["radios_channel", []];
-_volumes = profileNamespace getVariable ["radios_volume", []];
-_spatials = profileNamespace getVariable ["radios_spatial", []];
+private _baseRadios = profileNamespace getVariable ["radios_base", []];
+private _channels = profileNamespace getVariable ["radios_channel", []];
+private _volumes = profileNamespace getVariable ["radios_volume", []];
+private _spatials = profileNamespace getVariable ["radios_spatial", []];
 
 // Get the radio list from the player's inventory
-_radios = [] call acre_api_fnc_getCurrentRadioList;
+private _radios = [] call acre_api_fnc_getCurrentRadioList;
 
 // If player has no radios, do nothing
 if (count _radios == 0) then {
     hint "You are not carrying any radios";
 } else {
     // Reorder _radios array to match _baseRadios placing to be PTT1 PTT2 and PTT3 radios first
-    _sortedRadios = [];
+    private _sortedRadios = [];
     {
         _baseType = _x;
         _foundRadio = _radios findIf {[_x] call acre_api_fnc_getBaseRadio isEqualTo _baseType && !(_x in _sortedRadios)};
@@ -25,12 +25,12 @@ if (count _radios == 0) then {
     _radios = _sortedRadios + (_radios - _sortedRadios);
 
     // Set PTT assignments and implement restored radio settings
-    _success = [_radios] call acre_api_fnc_setMultiPushToTalkAssignment;
-    _foundMatchingRadios = false;
-    _baseRadiosCopy = +_baseRadios;
-    _channelsCopy = +_channels;
-    _volumesCopy = +_volumes;
-    _spatialsCopy = +_spatials;
+    private _success = [_radios] call acre_api_fnc_setMultiPushToTalkAssignment;
+    private _foundMatchingRadios = false;
+    private _baseRadiosCopy = +_baseRadios;
+    private _channelsCopy = +_channels;
+    private _volumesCopy = +_volumes;
+    private _spatialsCopy = +_spatials;
 
     {
         if (_forEachIndex >= 6) exitWith {};

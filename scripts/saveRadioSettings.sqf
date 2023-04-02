@@ -1,20 +1,20 @@
-_baseRadios = [];
-_channels = [];
-_volumes = [];
-_spatials = [];
+private _baseRadios = [];
+private _channels = [];
+private _volumes = [];
+private _spatials = [];
 
 // Get the current radio list and PTT assignments for each radio
-_radios = [] call acre_api_fnc_getCurrentRadioList;
-_pttAssignment = call acre_api_fnc_getMultiPushToTalkAssignment;
+private _radios = [] call acre_api_fnc_getCurrentRadioList;
+private _pttAssignment = call acre_api_fnc_getMultiPushToTalkAssignment;
 
 // Check if the player is carrying any radios, if not, show the hint and exit
 if (count _radios == 0) then {
     hint "There are no radios in your inventory";
 } else {
     // Rearrange the radios in the _radios array to set the PTT radios first
-    _tempRadios = [];
+    private _tempRadios = [];
     {
-        _pttRadio = _x;
+        private _pttRadio = _x;
         {
             if (_pttRadio == _x) then {
                 _tempRadios pushBack _x;

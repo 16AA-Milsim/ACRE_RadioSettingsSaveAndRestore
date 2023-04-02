@@ -7,7 +7,7 @@ _spatials = profileNamespace getVariable ["radios_spatial", []];
 // Check if previous settings exist
 if (_baseRadios isEqualTo []) then {
     // If not
-    hint "There are no saved settings.";
+    hint "There are no saved settings";
 } else {
     // Create a formatted string with the radio information and the Push To Talk assignment and Display as hint
     _hintString = "SAVED RADIO SETTINGS\n";

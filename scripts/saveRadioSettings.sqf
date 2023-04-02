@@ -12,6 +12,7 @@ if (count _radios == 0) exitWith {
     hint "There are no radios in your inventory";
     [{hintSilent "";}, [], 3] call CBA_fnc_waitAndExecute; // Clear hint
 };
+
 // Rearrange the radios in the _radios array to set the PTT radios first
 private _tempRadios = [];
 {

@@ -8,7 +8,7 @@ private _spatials = profileNamespace getVariable ["radios_spatial", []];
 if (_baseRadios isEqualTo []) exitWith {
     hint "There are no saved settings";
     [{hintSilent "";}, [], 3] call CBA_fnc_waitAndExecute; // Clear hint
-} 
+}; 
 
 // Create a formatted string with the radio information and the Push To Talk assignment and Display as hint
 private _hintString = "SAVED RADIO SETTINGS\n";

@@ -1,6 +1,4 @@
 params ["_player", "_didJIP"];
-_baseRadios = profileNamespace getVariable "radios_base";
-
 // Settings Branch
 _settingsBranch = ["Settings_Branch", "Radio Settings", "", {}, {true}] call ace_interact_menu_fnc_createAction;
 [(typeOf _player), 1, ["ACE_SelfActions", "ACRE_Interact"], _settingsBranch] call ace_interact_menu_fnc_addActionToClass;

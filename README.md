@@ -6,4 +6,6 @@ You can access the fuctions via ACE Self Interaction -> Radios -> Radio Settings
 
 Everything has pretty much been implemented except for the last hard part: Restoring The Radio Settings to a set of new radios. Use scripts/restoreRadioSettings.sqf for this purpose.
 
-The Delete Radio Settings function is only present for development purposes and will be removed when this is published proper.
+
+
+=== This is now ready for Beta Testing ===
